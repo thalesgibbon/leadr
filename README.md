@@ -6,9 +6,9 @@ API: https://github.com/thalesgibbon/swapp
 
 Mobile: https://github.com/joaoscheuermann/swapp
 
-PPT Pitch: doc/PPT_Pitch.pdf
+PPT Pitch: https://docs.google.com/presentation/d/1eFpw7t9NkY431srxoMS4ZMUWpQ9kZ-I4M75VDhdbG8w/edit#slide=id.p
 
-PPT Full: doc/PPT_Pitch.pdf
+PPT Full: https://docs.google.com/presentation/d/1OyB2Nyyq0lMSc2g91Ta1TgxzaG9B1VbaNRlHOgDe08g/edit?usp=sharing
 
 | Nome | GitHub 
 |---|---|
