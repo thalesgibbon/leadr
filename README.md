@@ -1,6 +1,22 @@
 ## Projeto
 Projeto com objetivo de conhecer a populacao bancarizada que nao utilizam o banco para transferencias internacionais por motivos de reducao de custo. A plataforma faz a intermediacao dessas transferencias, identificam transferencias semelhantes e para consiliar de forma simultanea um swap internacional.
 
+##### Link:
+API: https://github.com/thalesgibbon/swapp
+
+Mobile: https://github.com/joaoscheuermann/swapp
+
+PPT Pitch: doc/PPT_Pitch.pdf
+
+PPT Full: doc/PPT_Pitch.pdf
+
+| Nome | GitHub 
+|---|---|
+| Thales Gibbon | @thalesgibbon |
+| Joao Scheuermann  | @joaoscheuermann  |
+| Adirson Allen |  @ |
+| Athena Amar | @ |
+
 ## CODE - passo a passo realizado
 
 ##### 1. Passos para criacao do zero
