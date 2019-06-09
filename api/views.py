@@ -34,7 +34,114 @@ def Home(request):
     return render(request, 'home.html')
 
 
-""" PRIMEIRO NIVEL """
+def extrai_body(rq):
+    request_body = rq.body.decode(encoding='utf-8')
+    return dict(parse.parse_qsl(request_body))
+
+
+""" POST """
+
+
+class Usuario_add(ListView):
+
+    def post(self, request):
+        fields = ['cpf_cnpj', 'senha', 'cnpj_flag', 'nome_completo']
+        try:
+            request_body = extrai_body(request)
+
+            Usuario.objects.create(
+                cpf_cnpj=request_body['cpf_cnpj'],
+                senha=request_body['senha'],
+                cnpj_flag=request_body['cnpj_flag'],
+                nome_completo=request_body['nome_completo']
+            )
+            result = json.dumps({'status': 'ok'})
+        except:
+            result = json.dumps({'status': f'erro, fields: {fields}'})
+        return HttpResponse(result, content_type='application/json', status=200)
+
+
+class Conta_add(ListView):
+
+    def post(self, request):
+        fields = ['cpf_cnpj', 'banco_id', 'agencia_digito', 'conta_digito', 'poupanca_flag']
+        try:
+            request_body = extrai_body(request)
+
+            ContaUsuario.objects.create(
+                cpf_cnpj=request_body['cpf_cnpj'],
+                banco_id=request_body['banco_id'],
+                agencia_digito=request_body['agencia_digito'],
+                conta_digito=request_body['conta_digito'],
+                poupanca_flag=request_body['poupanca_flag']
+            )
+            result = json.dumps({'status': 'ok'})
+        except:
+            result = json.dumps({'status': f'erro, fields: {fields}'})
+        return HttpResponse(result, content_type='application/json', status=200)
+
+
+class Favorecido_add(ListView):
+
+    def post(self, request):
+        fields = ['conta_id', 'cpf_cnpj', 'cnpj_flag', 'banco_id', 'agencia_digito', 'conta_digito', 'poupanca_flag']
+        try:
+            request_body = extrai_body(request)
+
+            Favorecido.objects.create(
+                conta_id=request_body['conta_id'],
+                cpf_cnpj=request_body['cpf_cnpj'],
+                cnpj_flag=request_body['cnpj_flag'],
+                banco_id=request_body['banco_id'],
+                agencia_digito=request_body['agencia_digito'],
+                conta_digito=request_body['conta_digito'],
+                poupanca_flag=request_body['poupanca_flag']
+            )
+            result = json.dumps({'status': 'ok'})
+        except:
+            result = json.dumps({'status': f'erro, fields: {fields}'})
+        return HttpResponse(result, content_type='application/json', status=200)
+
+
+class Transacao_add(ListView):
+
+    def post(self, request):
+        fields = ['conta_id', 'favorecido_id', 'valor_dolar', 'status_id']
+        try:
+            request_body = extrai_body(request)
+
+            Transacao.objects.create(
+                conta_id=request_body['conta_id'],
+                favorecido_id=request_body['favorecido_id'],
+                valor_dolar=request_body['valor_dolar'],
+                status_id=request_body['status_id']
+            )
+            result = json.dumps({'status': 'ok'})
+        except:
+            result = json.dumps({'status': f'erro, fields: {fields}'})
+        return HttpResponse(result, content_type='application/json', status=200)
+
+
+class Match_add(ListView):
+
+    def post(self, request):
+        fields = ['transacao_id_d2r', 'transacao_id_r2d', 'valor_dolar', 'dolar_conversao']
+        try:
+            request_body = extrai_body(request)
+
+            Match.objects.create(
+                cpf_cnpj=request_body['cpf_cnpj'],
+                senha=request_body['senha'],
+                cnpj_flag=request_body['cnpj_flag'],
+                nome_completo=request_body['nome_completo']
+            )
+            result = json.dumps({'status': 'ok'})
+        except:
+            result = json.dumps({'status': f'erro, fields: {fields}'})
+        return HttpResponse(result, content_type='application/json', status=200)
+
+
+""" GET PRIMEIRO NIVEL """
 
 
 class Usuarios_list(ListView):
@@ -92,14 +199,13 @@ class Matchs_list(ListView):
         return HttpResponse(result, content_type='application/json', status=200)
 
 
-""" SEGUNDO NIVEL """
+""" GET SEGUNDO NIVEL """
 
 
 class UsuarioContas_list(ListView):
 
     def get(self, request):
-        request_body = request.body.decode(encoding='utf-8')
-        request_body = dict(parse.parse_qsl(request_body))
+        request_body = extrai_body(request)
         cpf_cnpj = request_body['cpf_cnpj']
 
         records = ContaUsuario.objects.all()  # todos registros
@@ -110,14 +216,13 @@ class UsuarioContas_list(ListView):
         return HttpResponse(result, content_type='application/json', status=200)
 
 
-""" TERCEIRO NIVEL """
+""" GET TERCEIRO NIVEL """
 
 
 class UsuarioContaFavorecidos_list(ListView):
 
     def get(self, request):
-        request_body = request.body.decode(encoding='utf-8')
-        request_body = dict(parse.parse_qsl(request_body))
+        request_body = extrai_body(request)
         conta_id = request_body['conta_id']
 
         records = Favorecido.objects.all()  # todos registros
@@ -131,8 +236,7 @@ class UsuarioContaFavorecidos_list(ListView):
 class UsuarioContaTransacoes_list(ListView):
 
     def get(self, request):
-        request_body = request.body.decode(encoding='utf-8')
-        request_body = dict(parse.parse_qsl(request_body))
+        request_body = extrai_body(request)
         conta_id = request_body['conta_id']
 
         records = Transacao.objects.all()  # todos registros
@@ -143,14 +247,13 @@ class UsuarioContaTransacoes_list(ListView):
         return HttpResponse(result, content_type='application/json', status=200)
 
 
-""" QUARTO NIVEL """
+""" GET QUARTO NIVEL """
 
 
 class UsuarioContaTransacaoMatchs_list(ListView):
 
     def get(self, request):
-        request_body = request.body.decode(encoding='utf-8')
-        request_body = dict(parse.parse_qsl(request_body))
+        request_body = extrai_body(request)
         transacao_id = request_body['transacao_id']
 
         records = Match.objects.all()  # todos registros
