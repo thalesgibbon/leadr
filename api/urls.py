@@ -19,4 +19,17 @@ from .views import *
 
 urlpatterns = [
     path(r'', Home, name='Home'),
+
+    path(r'usuarios', Usuarios_list.as_view()),
+    path(r'contas', Contas_list.as_view()),
+    path(r'favorecidos', Favorecidos_list.as_view()),
+    path(r'transacoes', Transacoes_list.as_view()),
+    path(r'matchs', Matchs_list.as_view()),
+
+    path(r'usuario/contas', UsuarioContas_list.as_view()),
+
+    path(r'usuario/conta/transacoes', UsuarioContaTransacoes_list.as_view()),
+    path(r'usuario/conta/favorecidos', UsuarioContaFavorecidos_list.as_view()),
+
+    path(r'usuario/conta/transacao/matchs', UsuarioContaTransacaoMatchs_list.as_view()),
 ]

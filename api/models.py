@@ -21,7 +21,9 @@ class ContaUsuario(models.Model):
 
 class Favorecido(models.Model):
     favorecido_id = models.IntegerField(primary_key=True, auto_created=True)
+    conta_id = models.ForeignKey(ContaUsuario, on_delete=models.CASCADE)
     cpf_cnpj = models.BigIntegerField()
+    cnpj_flag = models.BooleanField(default=False)
     banco_id = models.IntegerField()
     agencia_digito = models.IntegerField()
     conta_digito = models.IntegerField()
