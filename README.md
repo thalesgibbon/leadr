@@ -20,3 +20,13 @@ for registro in tabela:
 exit()
 
 x.delete()
+
+#
+porta 80
+allow host django
+
+ec2-18-207-210-129.compute-1.amazonaws.com
+Administrator
+4(LZ-Ee.!ZCVjTEmCytOt-@hImlodUpS
+18.207.210.129
+http://ec2-18-207-210-129.compute-1.amazonaws.com/
