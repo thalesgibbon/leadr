@@ -6,6 +6,7 @@ from django.core import serializers
 import json
 from urllib import parse
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 
 
 """ CONFIG """
@@ -69,7 +70,7 @@ class Conta_add(ListView):
             request_body = extrai_body(request)
 
             ContaUsuario.objects.create(
-                cpf_cnpj=request_body['cpf_cnpj'],
+                cpf_cnpj=Usuario.objects.get(cpf_cnpj=request_body['cpf_cnpj']),
                 banco_id=request_body['banco_id'],
                 agencia_digito=request_body['agencia_digito'],
                 conta_digito=request_body['conta_digito'],
@@ -89,7 +90,7 @@ class Favorecido_add(ListView):
             request_body = extrai_body(request)
 
             Favorecido.objects.create(
-                conta_id=request_body['conta_id'],
+                conta_id=ContaUsuario.objects.get(conta_id=request_body['conta_id']),
                 cpf_cnpj=request_body['cpf_cnpj'],
                 cnpj_flag=request_body['cnpj_flag'],
                 banco_id=request_body['banco_id'],
@@ -111,8 +112,8 @@ class Transacao_add(ListView):
             request_body = extrai_body(request)
 
             Transacao.objects.create(
-                conta_id=request_body['conta_id'],
-                favorecido_id=request_body['favorecido_id'],
+                conta_id=ContaUsuario.objects.get(conta_id=request_body['conta_id']),
+                favorecido_id=Favorecido.objects.get(favorecido_id=request_body['favorecido_id']),
                 valor_dolar=request_body['valor_dolar'],
                 status_id=request_body['status_id']
             )
@@ -130,10 +131,10 @@ class Match_add(ListView):
             request_body = extrai_body(request)
 
             Match.objects.create(
-                cpf_cnpj=request_body['cpf_cnpj'],
-                senha=request_body['senha'],
-                cnpj_flag=request_body['cnpj_flag'],
-                nome_completo=request_body['nome_completo']
+                transacao_id_d2r=Transacao.objects.get(transacao_id=request_body['transacao_id_d2r']),
+                transacao_id_r2d=Transacao.objects.get(transacao_id=request_body['transacao_id_r2d']),
+                valor_dolar=request_body['valor_dolar'],
+                dolar_conversao=request_body['dolar_conversao']
             )
             result = json.dumps({'status': 'ok'})
         except:

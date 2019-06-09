@@ -20,6 +20,12 @@ from .views import *
 urlpatterns = [
     path(r'', Home, name='Home'),
 
+    path(r'usuario/cadastro', csrf_exempt(Usuario_add.as_view())),
+    path(r'usuario/conta/cadastro', csrf_exempt(Conta_add.as_view())),
+    path(r'usuario/conta/favorecido/cadastro', csrf_exempt(Favorecido_add.as_view())),
+    path(r'usuario/conta/transacao/cadastro', csrf_exempt(Transacao_add.as_view())),
+    path(r'usuario/conta/transacao/match/cadastro', csrf_exempt(Match_add.as_view())),
+
     path(r'usuarios', Usuarios_list.as_view()),
     path(r'contas', Contas_list.as_view()),
     path(r'favorecidos', Favorecidos_list.as_view()),
