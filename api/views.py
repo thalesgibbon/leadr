@@ -6,7 +6,6 @@ from django.core import serializers
 import json
 from urllib import parse
 from django.db.models import Q
-from django.views.decorators.csrf import csrf_exempt
 
 
 """ CONFIG """
@@ -147,7 +146,7 @@ class Match_add(ListView):
 
 class Usuarios_list(ListView):
 
-    def get(self, request):
+    def post(self, request):
         records = Usuario.objects.all()  # todos registros
         records = records.values()  # filtra os campos
         records = [record for record in records]  # queryset para dict
@@ -158,7 +157,7 @@ class Usuarios_list(ListView):
 
 class Contas_list(ListView):
 
-    def get(self, request):
+    def post(self, request):
         records = ContaUsuario.objects.all()  # todos registros
         records = records.values()  # filtra os campos
         records = [record for record in records]  # queryset para dict
@@ -169,7 +168,7 @@ class Contas_list(ListView):
 
 class Favorecidos_list(ListView):
 
-    def get(self, request):
+    def post(self, request):
         records = Favorecido.objects.all()  # todos registros
         records = records.values()  # filtra os campos
         records = [record for record in records]  # queryset para dict
@@ -180,7 +179,7 @@ class Favorecidos_list(ListView):
 
 class Transacoes_list(ListView):
 
-    def get(self, request):
+    def post(self, request):
         records = Transacao.objects.all()  # todos registros
         records = records.values()  # filtra os campos
         records = [record for record in records]  # queryset para dict
@@ -191,7 +190,7 @@ class Transacoes_list(ListView):
 
 class Matchs_list(ListView):
 
-    def get(self, request):
+    def post(self, request):
         records = Match.objects.all()  # todos registros
         records = records.values()  # filtra os campos
         records = [record for record in records]  # queryset para dict
@@ -205,15 +204,19 @@ class Matchs_list(ListView):
 
 class UsuarioContas_list(ListView):
 
-    def get(self, request):
-        request_body = extrai_body(request)
-        cpf_cnpj = request_body['cpf_cnpj']
+    def post(self, request):
+        fields = ['cpf_cnpj',]
+        try:
+            request_body = extrai_body(request)
+            cpf_cnpj = request_body['cpf_cnpj']
 
-        records = ContaUsuario.objects.all()  # todos registros
-        records = records.filter(cpf_cnpj=cpf_cnpj).values()  # filtra os campos
-        records = [record for record in records]  # queryset para dict
-        records = date_jquery(records, 'data_input', '%F')  # ajusta data
-        result = json.dumps({'status': 'ok', 'result': records})
+            records = ContaUsuario.objects.all()  # todos registros
+            records = records.filter(cpf_cnpj=cpf_cnpj).values()  # filtra os campos
+            records = [record for record in records]  # queryset para dict
+            records = date_jquery(records, 'data_input', '%F')  # ajusta data
+            result = json.dumps({'status': 'ok', 'result': records})
+        except:
+            result = json.dumps({'status': f'erro, fields: {fields}'})
         return HttpResponse(result, content_type='application/json', status=200)
 
 
@@ -222,29 +225,37 @@ class UsuarioContas_list(ListView):
 
 class UsuarioContaFavorecidos_list(ListView):
 
-    def get(self, request):
-        request_body = extrai_body(request)
-        conta_id = request_body['conta_id']
+    def post(self, request):
+        fields = ['conta_id',]
+        try:
+            request_body = extrai_body(request)
+            conta_id = request_body['conta_id']
 
-        records = Favorecido.objects.all()  # todos registros
-        records = records.filter(conta_id=conta_id).values()  # filtra os campos
-        records = [record for record in records]  # queryset para dict
-        records = date_jquery(records, 'data_input', '%F')  # ajusta data
-        result = json.dumps({'status': 'ok', 'result': records})
+            records = Favorecido.objects.all()  # todos registros
+            records = records.filter(conta_id=conta_id).values()  # filtra os campos
+            records = [record for record in records]  # queryset para dict
+            records = date_jquery(records, 'data_input', '%F')  # ajusta data
+            result = json.dumps({'status': 'ok', 'result': records})
+        except:
+            result = json.dumps({'status': f'erro, fields: {fields}'})
         return HttpResponse(result, content_type='application/json', status=200)
 
 
 class UsuarioContaTransacoes_list(ListView):
 
-    def get(self, request):
-        request_body = extrai_body(request)
-        conta_id = request_body['conta_id']
+    def post(self, request):
+        fields = ['conta_id',]
+        try:
+            request_body = extrai_body(request)
+            conta_id = request_body['conta_id']
 
-        records = Transacao.objects.all()  # todos registros
-        records = records.filter(conta_id=conta_id).values()  # filtra os campos
-        records = [record for record in records]  # queryset para dict
-        records = date_jquery(records, 'data_input', '%F')  # ajusta data
-        result = json.dumps({'status': 'ok', 'result': records})
+            records = Transacao.objects.all()  # todos registros
+            records = records.filter(conta_id=conta_id).values()  # filtra os campos
+            records = [record for record in records]  # queryset para dict
+            records = date_jquery(records, 'data_input', '%F')  # ajusta data
+            result = json.dumps({'status': 'ok', 'result': records})
+        except:
+            result = json.dumps({'status': f'erro, fields: {fields}'})
         return HttpResponse(result, content_type='application/json', status=200)
 
 
@@ -253,15 +264,19 @@ class UsuarioContaTransacoes_list(ListView):
 
 class UsuarioContaTransacaoMatchs_list(ListView):
 
-    def get(self, request):
-        request_body = extrai_body(request)
-        transacao_id = request_body['transacao_id']
+    def post(self, request):
+        fields = ['transacao_id',]
+        try:
+            request_body = extrai_body(request)
+            transacao_id = request_body['transacao_id']
 
-        records = Match.objects.all()  # todos registros
-        records = records.filter(Q(transacao_id_d2r=transacao_id) | Q(transacao_id_d2r_id=transacao_id)).values()  # filtra os campos
-        records = [record for record in records]  # queryset para dict
-        records = date_jquery(records, 'data_input', '%F')  # ajusta data
-        result = json.dumps({'status': 'ok', 'result': records})
+            records = Match.objects.all()  # todos registros
+            records = records.filter(Q(transacao_id_d2r=transacao_id) | Q(transacao_id_d2r_id=transacao_id)).values()  # filtra os campos
+            records = [record for record in records]  # queryset para dict
+            records = date_jquery(records, 'data_input', '%F')  # ajusta data
+            result = json.dumps({'status': 'ok', 'result': records})
+        except:
+            result = json.dumps({'status': f'erro, fields: {fields}'})
         return HttpResponse(result, content_type='application/json', status=200)
 
 

@@ -25,7 +25,7 @@ SECRET_KEY = 'w)z%r^n(qm7-lmhc7_l(!s)hn5+s2&+m3+w5u(s86!^l^w+n^('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'ec2-18-207-210-129.compute-1.amazonaws.com']
+ALLOWED_HOSTS = ['ec2-18-207-210-129.compute-1.amazonaws.com', '127.0.0.1']
 
 
 # Application definition
@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = ['https://*', 'http://*', 'http://localhost:4200', 'http://localhost:8080']
 
 ROOT_URLCONF = 'swapp.urls'
 

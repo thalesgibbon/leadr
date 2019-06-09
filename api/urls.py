@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 from .views import *
+from django.views.decorators.csrf import csrf_exempt
 
 
 urlpatterns = [
@@ -26,16 +27,16 @@ urlpatterns = [
     path(r'usuario/conta/transacao/cadastro', csrf_exempt(Transacao_add.as_view())),
     path(r'usuario/conta/transacao/match/cadastro', csrf_exempt(Match_add.as_view())),
 
-    path(r'usuarios', Usuarios_list.as_view()),
-    path(r'contas', Contas_list.as_view()),
-    path(r'favorecidos', Favorecidos_list.as_view()),
-    path(r'transacoes', Transacoes_list.as_view()),
-    path(r'matchs', Matchs_list.as_view()),
+    path(r'usuarios', csrf_exempt(Usuarios_list.as_view())),
+    path(r'contas', csrf_exempt(Contas_list.as_view())),
+    path(r'favorecidos', csrf_exempt(Favorecidos_list.as_view())),
+    path(r'transacoes', csrf_exempt(Transacoes_list.as_view())),
+    path(r'matchs', csrf_exempt(Matchs_list.as_view())),
 
-    path(r'usuario/contas', UsuarioContas_list.as_view()),
+    path(r'usuario/contas', csrf_exempt(UsuarioContas_list.as_view())),
 
-    path(r'usuario/conta/transacoes', UsuarioContaTransacoes_list.as_view()),
-    path(r'usuario/conta/favorecidos', UsuarioContaFavorecidos_list.as_view()),
+    path(r'usuario/conta/transacoes', csrf_exempt(UsuarioContaTransacoes_list.as_view())),
+    path(r'usuario/conta/favorecidos', csrf_exempt(UsuarioContaFavorecidos_list.as_view())),
 
-    path(r'usuario/conta/transacao/matchs', UsuarioContaTransacaoMatchs_list.as_view()),
+    path(r'usuario/conta/transacao/matchs', csrf_exempt(UsuarioContaTransacaoMatchs_list.as_view())),
 ]
