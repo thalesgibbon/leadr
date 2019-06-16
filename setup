@@ -1,0 +1,18 @@
+# remove cros no setting
+# delete database
+# add cros no setting
+# pip install cros
+# makemigrations, migrate
+
+python manage.py shell
+from api.models import *
+
+Usuario.objects.create(cnpj = 28172787000198, senha = 'urra', empreendedor_flag = False)
+Projeto.objects.create(cnpj = Usuario.objects.get(cnpj=28172787000198), projeto_desc = 'FA nas Escolas', validade_date = '2019-01-01 00:00:00.000')
+Item.objects.create(projeto_id=Projeto.objects.get(projeto_id=1), item_desc='bolas infantil', valor=10.00)
+Match.objects.create(cnpj = Usuario.objects.get(cnpj=28172787000198), item_id = Item.objects.get(item_id=21))
+
+tabela = Usuario.objects.all().values()
+for registro in tabela: print(registro);
+
+exit()
