@@ -1,33 +1,14 @@
 import requests
-# from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup
 import pandas as pd
-from urllib import parse
+from pandas import ExcelWriter
 
 
-url = r'http://www2.esporte.gov.br/leiincentivo/leiIncentivoEsporte/consultaProjetosAprovadosAptosCaptacao.do'
 
-parametros = {}
-parametros['acao'] = 'consultar'
-parametros['dtInicio'] = '01-01-2018'
-parametros['dtFinal'] = '31-12-2018'
-parametros['sgUf'] = ''
-parametros['municipioVO.idMunicipio'] = ''
-parametros['nrSLIE'] = ''
-parametros['nmProponente'] = ''
-parametros['nmProjeto'] = ''
-parametros['modalidadeEsportivaVO.idModalidadeEsportiva'] = '0'
-parametros['areaFinalisticaVO.idAreaFinalistica'] = '0'
-parametros['nrProcesso'] = ''
 
-r = requests.get(url=url, params=parametros)
-r_content = r.content
-def extrai_body(rq):
-    request_body = rq.body.decode(encoding='utf-8')
-    return dict(parse.parse_qsl(request_body))
+df = pd.DataFrame(columns=['DataAprovacao', 'UF', 'ValorAprovado'])
 
-r.json()
-
-# In[4]:
+url = r'http://www2.esporte.gov.br/leiincentivo/leiIncentivoEsporte/consultaProjetosAprovadosAptosCaptacao.do?acao=consultar&dtInicio=01%2F01%2F2018&dtFinal=31%2F12%2F2018&sgUf=&municipioVO.idMunicipio=&nrSLIE=&nmProponente=&nmProjeto=&modalidadeEsportivaVO.idModalidadeEsportiva=0&areaFinalisticaVO.idAreaFinalistica=0&nrProcesso='
 
 
 #url=r'http://www2.esporte.gov.br/leiincentivo/leiIncentivoEsporte/consultaProjetosAprovadosAptosCaptacao.do?acao=consultar&dtInicio=01%2F01%2F2019&dtFinal=30%2F01%2F2019&sgUf=&municipioVO.idMunicipio=&nrSLIE=&nmProponente=&nmProjeto=&modalidadeEsportivaVO.idModalidadeEsportiva=0&areaFinalisticaVO.idAreaFinalistica=0&nrProcesso='
@@ -45,7 +26,23 @@ for item in range(1, len(x)):
     df = df.append({'UF': uf, 'DataAprovacao': data_aprovacao, 'ValorAprovado' : valor_aprovado}, ignore_index=True)
 
 
-# In[5]:
+page = requests.get(url)
+soup = BeautifulSoup(page.content, 'html.parser')
+x = soup.find_all(class_='strong alignRight')
+ufs = []
+for item in range(1, len(x)):
+    ufs.append(x[item].contents[0].contents[0])
 
 
-df
+
+ufs.insert(0,'0,00')
+
+
+
+df['ValorCaptado'] = ufs
+
+
+
+writer = ExcelWriter(r'C:\Users\gustavomartins\Desktop\df1.xlsx')
+df.to_excel(writer,'Sheet1', index=False)
+writer.save()
