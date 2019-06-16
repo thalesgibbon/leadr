@@ -1,0 +1,3 @@
+# remove cros no setting
+# delete database
+# makemigrations, migrate
