@@ -1,10 +1,11 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 from django.shortcuts import render
 from .models import *
 from django.http import HttpResponse
 from django.core import serializers
 import json
 from urllib import parse
+from django.http import HttpResponseRedirect
 
 
 """ CONFIG """
@@ -44,6 +45,8 @@ def extrai_body(rq):
 class Usuario_add(ListView):
 
     def post(self, request):
+        from codigos.request_cnpj import GetCnpj
+
         fields = ['cnpj', 'senha', 'empreendedor_flag']
         try:
             request_body = extrai_body(request)
@@ -52,6 +55,15 @@ class Usuario_add(ListView):
                 cnpj=request_body['cnpj'],
                 senha=request_body['senha'],
                 empreendedor_flag=request_body['empreendedor_flag']
+            )
+            dicio_cnpj = GetCnpj(request_body['cnpj']).reload()
+            InfoUsuario.objects.create(
+                cnpj=dicio_cnpj['cnpj'],
+                data_abertura=dicio_cnpj['data_abertura'],
+                nome_empresarial=dicio_cnpj['nome_empresarial'],
+                nome_fantasia=dicio_cnpj['nome_fantasia'],
+                uf=dicio_cnpj['uf'],
+                email=dicio_cnpj['email']
             )
             result = json.dumps({'status': 'ok'})
         except:

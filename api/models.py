@@ -8,6 +8,16 @@ class Usuario(models.Model):
     data_input = models.DateTimeField(auto_now_add=True)
 
 
+class InfoUsuario(models.Model):
+    cnpj = models.BigIntegerField(primary_key=True)
+    data_abertura = models.DateField()
+    nome_empresarial = models.CharField(max_length=100)
+    nome_fantasia = models.CharField(max_length=100)
+    uf = models.CharField(max_length=2)
+    email = models.CharField(max_length=100)
+    data_input = models.DateTimeField(auto_now_add=True)
+
+
 class Projeto(models.Model):
     projeto_id = models.IntegerField(primary_key=True, auto_created=True)
     cnpj = models.ForeignKey(Usuario, on_delete=models.CASCADE)
