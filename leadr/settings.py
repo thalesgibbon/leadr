@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'corsheaders',
-    'codigos',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -43,7 +43,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = ['https://*', 'http://*', 'http://localhost:4200', 'http://localhost:8080']
 
-ROOT_URLCONF = 'incentiva.urls'
+ROOT_URLCONF = 'leadr.urls'
 
 TEMPLATES = [
     {
@@ -61,7 +61,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'incentiva.wsgi.application'
+WSGI_APPLICATION = 'leadr.wsgi.application'
 
 
 # Database
